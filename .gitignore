@@ -1,0 +1,6 @@
+# ag-schedule — runtime directories (do NOT commit)
+jobs/
+logs/
+
+# macOS
+.DS_Store
