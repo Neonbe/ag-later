@@ -8,9 +8,9 @@ AG_SCHEDULE_DIR="$HOME/.ag-schedule"
 LOG_FILE="$AG_SCHEDULE_DIR/logs/send.log"
 APP_NAME="Antigravity"
 # 等待窗口就绪的时间（秒）
-ACTIVATE_DELAY=0.8
+ACTIVATE_DELAY=2.5
 # 粘贴后等待时间（秒）
-PASTE_DELAY=0.3
+PASTE_DELAY=0.8
 # 锁屏时最大等待时间（秒）
 LOCK_TIMEOUT=600
 # 锁屏检查间隔（秒）
@@ -143,14 +143,18 @@ echo -n "$MESSAGE" | pbcopy
 
 # 5. AppleScript：激活窗口 → 全选输入框 → 粘贴 → 发送
 osascript <<APPLESCRIPT
+-- 激活 App，等待窗口就绪
 tell application "$APP_NAME" to activate
 delay $ACTIVATE_DELAY
 
 tell application "System Events"
     tell process "$APP_NAME"
+        -- 强制前置，确保后台唤起时窗口真正获得焦点
+        set frontmost to true
+        delay 0.5
         -- 全选输入框内容（覆盖可能的草稿）
         keystroke "a" using command down
-        delay 0.1
+        delay 0.2
         -- 粘贴消息
         keystroke "v" using command down
         delay $PASTE_DELAY
